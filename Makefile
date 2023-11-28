@@ -3,8 +3,8 @@ EXIT_ON_ERROR = set -e;
 .PHONY: rails
 rails:
 	@bundle install
-	@bin/rails db:migrate
-	@bin/rails s -e development
+	@bundle exec rails db:migrate
+	@bundle exec rails s -e development
 
 .PHONY: rails-test
 rails-test:
