@@ -8,7 +8,7 @@ interface Props {
 
 export function FlowLayout({ children, showLogoutButton = true }: Props) {
   return (
-    <div className="h-full mt-5 max-w-[1000px] mx-auto">
+    <div className="h-full mt-10 max-w-[1000px] mx-auto">
       <div className="w-full text-right">
         {showLogoutButton && (
           <Link to="/logout" reloadDocument>

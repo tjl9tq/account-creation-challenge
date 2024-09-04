@@ -8,7 +8,7 @@ interface Props {
   disabled?: boolean;
 }
 
-const classes = 'inline-block py-3 px-6 bg-[hsla(244,49%,49%,1)]  text-white rounded w-full';
+const classes = `inline-block py-3 px-6 bg-wealthfront text-white rounded w-full`;
 
 export function Button({ href, children, type, disabled = false }: Props) {
   if (href) {
@@ -22,8 +22,8 @@ export function Button({ href, children, type, disabled = false }: Props) {
   return (
     <button
       type={type}
-      className={`${classes} transition-opacity duration-300 ${
-        disabled ? 'opacity-40' : 'hover:bg-[hsla(244,49%,40%,1)]}'
+      className={`${classes} transition duration-200 bg-wealthfront ${
+        disabled ? 'opacity-40' : `hover:!opacity-90 active:scale-[.99]`
       }`}
       disabled={disabled}
     >

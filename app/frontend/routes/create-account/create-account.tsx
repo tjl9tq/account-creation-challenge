@@ -10,17 +10,18 @@ export const CreateAccount = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    validateForm();
-    console.log(formData);
   };
 
+  const handleUsernameChange = (value: string) => {
+    setUsername(value);
+  };
   const disableSubmit = !username || !password;
   return (
     <FlowLayout showLogoutButton={false}>
       <Card title={'Create New Account'}>
         <form onSubmit={handleSubmit}>
-          <Input label="Username" onChange={(value) => setUsername(value)} />
-          <Input label="Password" onChange={(value) => setPassword(value)} />
+          <Input label="Username" onChange={handleUsernameChange} />
+          <Input label="Password" onChange={(value) => setPassword(value)} type="password" />
           <Button type="submit" disabled={disableSubmit}>
             Create Account
           </Button>
