@@ -1,8 +1,1 @@
-export const getCSRFToken = () => {
-  const element = document.querySelector('[name="csrf-token"]');
-
-  if (element instanceof HTMLMetaElement) {
-    return element.content;
-  }
-  return '';
-};
+export const getCSRFToken = () => document.querySelector('[name="csrf-token"]')?.getAttribute('content') ?? '';
