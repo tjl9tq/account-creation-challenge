@@ -6,28 +6,19 @@ interface Props {
   required?: boolean;
   type?: string;
   onBlur?: () => void;
+  error?: string | null;
 }
 
-export function Input({ onChange, label, required = true, type, onBlur }: Props) {
+export function Input({ onChange, label, required = true, type, onBlur, error }: Props) {
   const [value, setValue] = useState('');
-  const [error, setError] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const id = label.replace(/ /gm, '_');
-
-  const validateValue = (value: string) => {
-    if (value.length === 0) {
-      setError(`${label} is required`);
-    } else {
-      setError('');
-    }
-  };
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     const {
       target: { value },
     } = event;
     setValue(value);
-    if (error) validateValue(value);
     onChange?.(value);
   }
 
@@ -35,9 +26,8 @@ export function Input({ onChange, label, required = true, type, onBlur }: Props)
     setIsFocused(true);
   };
 
-  const handleOnBlur = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleOnBlur = () => {
     setIsFocused(false);
-    validateValue(event.target.value);
     onBlur?.();
   };
 

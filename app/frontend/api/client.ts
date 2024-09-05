@@ -7,12 +7,35 @@ const defaultHeaders = {
   'X-CSRF-TOKEN': getCSRFToken(),
 };
 
-const handleResponse = async <T>(response: Response): Promise<T> => {
+interface CreateAccountResponse {
+  success: boolean;
+  userId: number;
+}
+
+interface User {
+  id: number;
+  username: string;
+}
+
+export interface ErrorResponse {
+  success: boolean;
+  errors: { [key: string]: string[] };
+  message: string;
+}
+
+const handleResponse = async <T>(response: Response): Promise<{ data: T | ErrorResponse; status: number }> => {
   if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || 'Something went wrong.');
+    const errorData = await response.json();
+    if (errorData.errors) {
+      return {
+        data: { errors: errorData.errors, message: errorData.message, success: errorData.success } as ErrorResponse,
+        status: response.status,
+      };
+    } else {
+      throw new Error('An unknown error occurred');
+    }
   }
-  return response.json();
+  return { data: (await response.json()) as T, status: response.status };
 };
 
 export const apiClient = {
@@ -22,7 +45,7 @@ export const apiClient = {
       body: JSON.stringify({ username, password }),
       headers: defaultHeaders,
     });
-    return handleResponse(response);
+    return handleResponse<CreateAccountResponse>(response);
   },
 
   fetchUsers: async () => {
@@ -30,6 +53,6 @@ export const apiClient = {
       method: 'GET',
       headers: defaultHeaders,
     });
-    return handleResponse(response);
+    return handleResponse<User[]>(response);
   },
 };
