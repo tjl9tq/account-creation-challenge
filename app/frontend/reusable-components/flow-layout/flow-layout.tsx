@@ -1,5 +1,5 @@
+import { signupsClient } from 'app/frontend/api';
 import React, { ReactNode } from 'react';
-import { Link } from 'react-router-dom';
 
 interface Props {
   children: ReactNode;
@@ -11,9 +11,16 @@ export function FlowLayout({ children, showLogoutButton = true }: Props) {
     <div className="h-full mt-10 max-w-[1000px] mx-auto">
       <div className="w-full text-right">
         {showLogoutButton && (
-          <Link to="/logout" reloadDocument>
+          <button
+            onClick={() => {
+              signupsClient.logout().then(() => {
+                console.log('hello');
+                window.location.href = 'http://localhost:3000/create-account';
+              });
+            }}
+          >
             Logout
-          </Link>
+          </button>
         )}
       </div>
       {children}

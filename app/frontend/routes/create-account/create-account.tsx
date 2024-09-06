@@ -1,4 +1,4 @@
-import { apiClient, ErrorResponse } from 'app/frontend/api/client';
+import { createAccountClient, ErrorResponse } from 'app/frontend/api';
 import { Button } from 'app/frontend/reusable-components/button/button';
 import { Card } from 'app/frontend/reusable-components/card/card';
 import { FlowLayout } from 'app/frontend/reusable-components/flow-layout/flow-layout';
@@ -35,9 +35,9 @@ export const CreateAccount = () => {
       return;
     }
 
-    apiClient.createAccount(username, password).then((res) => {
+    createAccountClient.createAccount(username, password).then((res) => {
       if (res.data.success && res.status === 201) {
-        // Redirect to signup route
+        window.location.href = 'http://localhost:3000/signup/account-selection';
       } else {
         setUsernameError(`Username ${(res.data as ErrorResponse).errors?.username[0]}`);
         setPasswordError(`Password ${(res.data as ErrorResponse).errors?.password[0]}`);
