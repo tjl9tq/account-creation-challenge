@@ -1,9 +1,9 @@
 class ApiControllerTest < ActionDispatch::IntegrationTest
-  # test "password_strength" do
-  #   post api_password_strength_path, params: { password: '123' }
-  #   assert_response :success
-  #   assert_equal response.body, "{\"score\":0}"
-  # end
+  test "password_strength" do
+    post api_password_strength_path, params: { password: '123' }
+    assert_response :success
+    assert_equal response.body, "{\"score\":0}"
+  end
 
   test "create_account fails with missing username" do
     post api_create_account_path, params: { password: '123' }

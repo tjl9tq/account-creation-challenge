@@ -20,10 +20,15 @@ class Api::UsersController < ApplicationController
         @user = User.new(user_params)
         if @user.save
             session[:current_user_id] = @user.id
-            render json: { success: true, userId: @user.id}, status: :created
+            render json: { success: true, userId: @user.id }, status: :created
         else
             render json: { success: false, errors: @user.errors.messages, message: "Validation failed" }, status: :unprocessable_entity
         end
+    end
+
+    def password_strength
+        strength = Zxcvbn.test(params[:password])
+        render json: { score: strength['score'] }
     end
 
     private

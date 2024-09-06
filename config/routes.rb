@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     post 'create-account', to: 'users#create_account'
+    post 'password-strength', to: 'users#password_strength'
     resources :users, only: [:index, :show, :update]
     get '/status', to: 'logins#status'
   end
