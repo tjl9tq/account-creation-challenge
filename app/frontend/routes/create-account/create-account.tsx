@@ -39,8 +39,13 @@ export const CreateAccount = () => {
       if (res.data.success && res.status === 201) {
         window.location.href = 'http://localhost:3000/signup/account-selection';
       } else {
-        setUsernameError(`Username ${(res.data as ErrorResponse).errors?.username[0]}`);
-        setPasswordError(`Password ${(res.data as ErrorResponse).errors?.password[0]}`);
+        const errors = (res.data as ErrorResponse).errors;
+        if (errors?.username && errors?.username.length > 0) {
+          setUsernameError(`Username ${errors?.username[0]}`);
+        }
+        if (errors?.password && errors?.password.length > 0) {
+          setPasswordError(`Password ${errors?.password[0]}`);
+        }
       }
     });
   };
