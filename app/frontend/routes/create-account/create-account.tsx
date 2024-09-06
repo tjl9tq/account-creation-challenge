@@ -74,9 +74,11 @@ export const CreateAccount = () => {
     <FlowLayout showLogoutButton={false}>
       <Card title="Create New Account">
         <form onSubmit={handleSubmit}>
-          <Input label="Username" onChange={handleUsernameChange} error={usernameError} />
-          <Input label="Password" onChange={handlePasswordChange} type="password" error={passwordError} />
-          <Button type="submit" disabled={disableSubmit}>
+          <div className="space-y-4">
+            <Input label="Username" onChange={handleUsernameChange} error={usernameError} />
+            <Input label="Password" onChange={handlePasswordChange} type="password" error={passwordError} />
+          </div>
+          <Button type="submit" disabled={disableSubmit} className="mt-8">
             Create Account
           </Button>
         </form>

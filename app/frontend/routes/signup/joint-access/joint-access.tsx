@@ -11,12 +11,14 @@ export function JointAccess() {
         title="Will this be a joint account?"
         description="Joint accounts allow for a secondary account holder which provides the same level of access as the primary."
       >
-        <div className="space-y-2">
+        <div className="space-y-4">
           <Input label="First name" />
           <Input label="Last name" />
           <Input label="Email" />
-          <Button href="/signup/stock-restrictions">Continue</Button>
         </div>
+        <Button href="/signup/stock-restrictions" className="my-8">
+          Continue
+        </Button>
       </Card>
     </FlowLayout>
   );

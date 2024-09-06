@@ -32,7 +32,7 @@ export function Input({ onChange, label, required = true, type, onBlur, error }:
   };
 
   return (
-    <div className="my-8 relative">
+    <div className="relative">
       <label
         className={`absolute text-sm font-semibold text-slate-500 top-5 left-2 transition-tranform transition-top duration-200 cursor-text pointer-events-none ${
           (isFocused || Boolean(value)) && 'transform scale-[.66] !top-1 !left-0.5'

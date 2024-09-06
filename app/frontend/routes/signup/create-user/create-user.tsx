@@ -8,12 +8,16 @@ export function CreateUser() {
   return (
     <FlowLayout>
       <Card title="What's your first and last name?">
-        <div className="space-y-2">
-          <Input label="First name" />
-          <Input label="Last name" />
-          <Input label="Email" />
-          <Button href="/signup/joint-access">Continue</Button>
-        </div>
+        <form>
+          <div className="space-y-4">
+            <Input label="First name" required />
+            <Input label="Last name" required />
+            <Input label="Email" required />
+          </div>
+          <Button href="/signup/joint-access" disabled={false} className="mt-8">
+            Continue
+          </Button>
+        </form>
       </Card>
     </FlowLayout>
   );

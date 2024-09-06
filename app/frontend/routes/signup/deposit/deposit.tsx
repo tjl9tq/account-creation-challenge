@@ -10,9 +10,11 @@ export function Deposit() {
       <Card title="Deposit funds" description="Accounts can be funded with as little as $5.">
         <div className="space-y-2">
           <Input label="Deposit Amount" />
-          <Button href="/signup/account-selection">Start over</Button>
         </div>
       </Card>
+      <Button href="/signup/account-selection" className="mt-8">
+        Start over
+      </Button>
     </FlowLayout>
   );
 }

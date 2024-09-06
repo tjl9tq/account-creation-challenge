@@ -7,7 +7,7 @@ export function AccountSelection() {
   return (
     <FlowLayout>
       <Card title="What type of account would you like?" description="You can open a new account in just 5 minutes.">
-        <div className="space-y-2 first-child:border-t-slate-200">
+        <div className="space-y-4 first-child:border-t-slate-200">
           <Link
             to="/signup/create-user?type=cash"
             className="text-gray-500 block hover:bg-purple-50 transform-[background-color] duration-100 ease-in p-4 pl-2 rounded-2xl"
