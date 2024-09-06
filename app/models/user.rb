@@ -8,8 +8,8 @@ class User < ApplicationRecord
 
   def validate_password
     strength = Zxcvbn.test(password)
-    if strength['score'] < 2
-      errors.add(:password, 'is too weak. Please make it stronger.')
+    if strength['score'] <= 2
+      errors.add(:password, 'is too weak. Please choose a stronger password that includes a mix of letters, numbers, and symbols.')
     end
   end
 end
