@@ -10,6 +10,10 @@ export interface User {
   username: string;
 }
 
+export interface PasswordStrengthResponse {
+  score: number;
+}
+
 export const createAccountClient = {
   createAccount: async (username: string, password: string) => {
     const response = await fetch(`${API_BASE_URL}/create-account`, {
@@ -28,13 +32,13 @@ export const createAccountClient = {
     return handleResponse<User[]>(response);
   },
 
-  login: async (username: string, password: string) => {
-    const response = await fetch(`/login`, {
+  passwordStrength: async (password: string) => {
+    const response = await fetch(`${API_BASE_URL}/password-strength`, {
       method: 'POST',
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ password }),
       headers: defaultHeaders,
     });
-    return handleResponse(response);
+    return handleResponse<PasswordStrengthResponse>(response);
   },
 };
 

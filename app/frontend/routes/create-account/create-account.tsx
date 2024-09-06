@@ -1,15 +1,20 @@
+import React, { useCallback, useState } from 'react';
+
 import { createAccountClient, ErrorResponse } from 'app/frontend/api';
 import { Button } from 'app/frontend/reusable-components/button/button';
 import { Card } from 'app/frontend/reusable-components/card/card';
 import { FlowLayout } from 'app/frontend/reusable-components/flow-layout/flow-layout';
 import { Input } from 'app/frontend/reusable-components/input/input';
-import React, { useState } from 'react';
+import { PasswordStrengthResponse } from 'app/frontend/api/createAccountClient';
+import PasswordStrength from 'app/frontend/reusable-components/password-strength/password-strength';
+import { debounce } from 'app/frontend/utils';
 
 export const CreateAccount = () => {
   const [username, setUsername] = useState('');
   const [usernameError, setUsernameError] = useState<string | null>(null);
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [passwordStrength, setPasswordStrength] = useState<number | null>(0);
 
   const validate = (value: string, validations: ((value: string) => string | null)[]) => {
     for (const validate of validations) {
@@ -18,6 +23,25 @@ export const CreateAccount = () => {
     }
     return null;
   };
+
+  const checkPasswordStrength = (password: string) => {
+    console.log('hello');
+    createAccountClient.passwordStrength(password).then((res) => {
+      if (res.status === 200) {
+        setPasswordStrength((res.data as PasswordStrengthResponse).score);
+      } else {
+        // if endpoint is failing, let users submit and let BE handle strength validation
+        setPasswordStrength(null);
+      }
+    });
+  };
+
+  const debouncedCheckPasswordStrength = useCallback(
+    debounce((password: string) => {
+      checkPasswordStrength(password);
+    }, 500),
+    [checkPasswordStrength]
+  );
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -60,6 +84,7 @@ export const CreateAccount = () => {
     setPassword(value);
     const errorMsg = validate(value, passwordValidations);
     setPasswordError(errorMsg);
+    debouncedCheckPasswordStrength(value);
   };
 
   const usernameValidations = [
@@ -74,7 +99,12 @@ export const CreateAccount = () => {
       !/[a-zA-Z]/.test(value) || !/[0-9]/.test(value) ? 'Must contain at least one letter and one number' : null,
   ];
 
-  const disableSubmit = !username || !password || !!usernameError || !!passwordError;
+  const disableSubmit =
+    !username ||
+    !password ||
+    !!usernameError ||
+    !!passwordError ||
+    (passwordStrength !== null && passwordStrength <= 2);
   return (
     <FlowLayout showLogoutButton={false}>
       <Card title="Create New Account">
@@ -82,6 +112,7 @@ export const CreateAccount = () => {
           <div className="space-y-4">
             <Input label="Username" onChange={handleUsernameChange} error={usernameError} />
             <Input label="Password" onChange={handlePasswordChange} type="password" error={passwordError} />
+            {passwordStrength != null && <PasswordStrength score={passwordStrength} />}
           </div>
           <Button type="submit" disabled={disableSubmit} className="mt-8">
             Create Account
