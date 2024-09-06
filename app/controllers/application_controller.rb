@@ -2,6 +2,10 @@ class ApplicationController < ActionController::Base
   before_action :require_login, only: [:render_signup]
   helper_method :current_user, :logged_in?
 
+  def render_react
+    react
+  end
+
   def render_signup
     react
   end

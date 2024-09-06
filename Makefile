@@ -8,8 +8,7 @@ rails:
 
 .PHONY: rails-test
 rails-test:
-	@bin/rails test
-
+	ruby bin/rails test
 .PHONY: vite
 vite:
 	@npm install

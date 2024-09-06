@@ -28,7 +28,7 @@ links below for more information.
 
 `make -j dev` installs packages and starts the development server. The site exists at `localhost:3000`.
 
-`make -j test` runs the tests.
+`make -j test` runs the tests. (I had to change the script in the makefile to get this to run on Windows. If this doesn't work, changing rails-test to `@bin/rails test` might fix it.)
 
 ## Versions
 
