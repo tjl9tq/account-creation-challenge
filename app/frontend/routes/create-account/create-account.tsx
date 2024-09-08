@@ -25,7 +25,6 @@ export const CreateAccount = () => {
   };
 
   const checkPasswordStrength = (password: string) => {
-    console.log('hello');
     createAccountClient.passwordStrength(password).then((res) => {
       if (res.status === 200) {
         setPasswordStrength((res.data as PasswordStrengthResponse).score);
