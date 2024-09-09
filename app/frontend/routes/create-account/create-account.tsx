@@ -24,7 +24,7 @@ export const CreateAccount = () => {
     return null;
   };
 
-  const checkPasswordStrength = (password: string) => {
+  const checkPasswordStrength = useCallback((password: string) => {
     createAccountClient.passwordStrength(password).then((res) => {
       if (res.status === 200) {
         setPasswordStrength((res.data as PasswordStrengthResponse).score);
@@ -33,14 +33,15 @@ export const CreateAccount = () => {
         setPasswordStrength(null);
       }
     });
-  };
+  }, []);
 
   const debouncedCheckPasswordStrength = useCallback(
-    debounce((password: string) => {
-      checkPasswordStrength(password);
-    }, 500),
+    () =>
+      debounce((password: string) => {
+        checkPasswordStrength(password);
+      }, 500),
     [checkPasswordStrength]
-  );
+  )();
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
