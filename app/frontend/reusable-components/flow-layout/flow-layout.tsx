@@ -14,7 +14,6 @@ export function FlowLayout({ children, showLogoutButton = true }: Props) {
           <button
             onClick={() => {
               signupsClient.logout().then(() => {
-                console.log('hello');
                 window.location.href = 'http://localhost:3000/create-account';
               });
             }}
