@@ -24,21 +24,29 @@ const PasswordStrength = ({ score }: { score: number }) => {
     Strong: 'bg-green-500',
     'Very Strong': 'bg-blue-500',
   }[strengthLabel];
+  const labelColor = {
+    Weak: 'text-red-500',
+    Fair: 'text-red-500',
+    Good: 'text-red-500',
+    Strong: 'text-black',
+    'Very Strong': 'text-black',
+  }[strengthLabel];
 
   return (
-    <div className="w-full py-6">
-      <div className="w-full bg-gray-200 rounded h-2">
+    <div className="w-full py-4">
+      <div className="w-1/4 bg-gray-200 rounded h-2 mx-2">
         <div
           className={`h-full ${strengthColor} transition-all duration-300 rounded`}
           style={{ width: `${score * 25}%` }}
         />
       </div>
-      <div>
-        <div className="font-bold mb-1 mt-4 text-xs">{strengthLabel}</div>
-        <div className="text-gray-500 text-xs">
+      <div className="mx-2">
+        <div className={`font-bold mb-1 mt-4 text-xs ${labelColor}`}>{strengthLabel}</div>
+        <div className={`text-gray-500 text-xs ${labelColor}`}>
           {strengthLabel === 'Weak' && 'Password is too weak. Try adding more characters, numbers, and symbols.'}
-          {strengthLabel === 'Fair' && 'Password could be stronger. Consider adding more variety in characters.'}
-          {strengthLabel === 'Good' && 'Password is good, but could still be stronger.'}
+          {strengthLabel === 'Fair' && 'Password still too weak. Consider adding more variety in characters.'}
+          {strengthLabel === 'Good' &&
+            'Password is decent, but could still be stronger. Please add more variety in characters.'}
           {strengthLabel === 'Strong' && 'Password is strong. Well done!'}
           {strengthLabel === 'Very Strong' && 'Password is very strong. Amazing!'}
         </div>
