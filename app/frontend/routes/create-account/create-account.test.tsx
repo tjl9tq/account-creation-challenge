@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { CreateAccount } from './create-account';
 import { createAccountClient, ErrorResponse } from 'app/frontend/api';
@@ -7,6 +7,7 @@ import { createAccountClient, ErrorResponse } from 'app/frontend/api';
 jest.mock('app/frontend/api', () => ({
   createAccountClient: {
     createAccount: jest.fn(),
+    passwordStrength: jest.fn().mockResolvedValue({ status: 200, data: { score: 4 } }),
   },
 }));
 
@@ -23,41 +24,49 @@ describe('CreateAccount Component', () => {
     expect(screen.getByText(/create account/i)).toBeInTheDocument();
   });
 
-  test('shows validation errors for username and password', () => {
+  test('shows validation errors for username and password', async () => {
     render(<CreateAccount />);
 
     const usernameInput = screen.getByLabelText(/username/i);
     const passwordInput = screen.getByLabelText(/password/i);
 
-    fireEvent.change(usernameInput, { target: { value: 'short' } });
-    fireEvent.change(passwordInput, { target: { value: 'short' } });
+    await act(async () => {
+      fireEvent.change(usernameInput, { target: { value: 'short' } });
+      fireEvent.change(passwordInput, { target: { value: 'short' } });
+    });
 
     expect(screen.getByText(/must be at least 10 characters/i)).toBeInTheDocument();
     expect(screen.getByText(/must be at least 20 characters/i)).toBeInTheDocument();
   });
 
-  test('disables submit button if there are validation errors', () => {
+  test('disables submit button if there are validation errors', async () => {
     render(<CreateAccount />);
 
     const usernameInput = screen.getByLabelText(/username/i);
     const passwordInput = screen.getByLabelText(/password/i);
 
-    fireEvent.change(usernameInput, { target: { value: 'short' } });
-    fireEvent.change(passwordInput, { target: { value: 'short' } });
+    await act(async () => {
+      fireEvent.change(usernameInput, { target: { value: 'short' } });
+      fireEvent.change(passwordInput, { target: { value: 'short' } });
+    });
 
     expect(screen.getByText(/create account/i)).toBeDisabled();
   });
 
-  test('enables submit button if inputs are valid', () => {
+  test('enables submit button if inputs are valid', async () => {
     render(<CreateAccount />);
 
     const usernameInput = screen.getByLabelText(/username/i);
     const passwordInput = screen.getByLabelText(/password/i);
 
-    fireEvent.change(usernameInput, { target: { value: 'validusername' } });
-    fireEvent.change(passwordInput, { target: { value: 'ValidPassword123!456789' } });
+    await act(async () => {
+      fireEvent.change(usernameInput, { target: { value: 'validusername' } });
+      fireEvent.change(passwordInput, { target: { value: 'ValidPassword123!456789' } });
+    });
 
-    expect(screen.getByText(/create account/i)).toBeEnabled();
+    await waitFor(() => {
+      expect(screen.getByText(/create account/i)).toBeEnabled();
+    });
   });
 
   test('handles form submission and shows server errors', async () => {
@@ -76,8 +85,13 @@ describe('CreateAccount Component', () => {
     const passwordInput = screen.getByLabelText(/password/i);
     const submitButton = screen.getByText(/create account/i);
 
-    fireEvent.change(usernameInput, { target: { value: 'validusername' } });
-    fireEvent.change(passwordInput, { target: { value: 'ValidPassword123!456789' } });
+    await act(async () => {
+      fireEvent.change(usernameInput, { target: { value: 'validusername' } });
+      fireEvent.change(passwordInput, { target: { value: 'ValidPassword123!456789' } });
+    });
+    await waitFor(() => {
+      expect(screen.getByText(/create account/i)).toBeEnabled();
+    });
 
     fireEvent.click(submitButton);
 
@@ -110,8 +124,14 @@ describe('CreateAccount Component', () => {
     const passwordInput = screen.getByLabelText(/password/i);
     const submitButton = screen.getByText(/create account/i);
 
-    fireEvent.change(usernameInput, { target: { value: 'validusername' } });
-    fireEvent.change(passwordInput, { target: { value: 'ValidPassword123!456789' } });
+    await act(async () => {
+      fireEvent.change(usernameInput, { target: { value: 'validusername' } });
+      fireEvent.change(passwordInput, { target: { value: 'ValidPassword123!456789' } });
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(/create account/i)).toBeEnabled();
+    });
 
     fireEvent.click(submitButton);
 
